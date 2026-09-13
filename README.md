@@ -11,13 +11,59 @@ Use Playwright with TypeScript to perform automated API testing for a [Spring Bo
 Implemented tasks:
 
 - Set up Playwright and configure the backend `baseURL`
-- Create positive API test cases
-- Create negative API test cases
+- Create positive and negative API test cases
 - Validate HTTP status codes
 - Validate response structure and data types
 - Test query parameters
 
 [Detailed information](#playwright-api-testing-for-bonsai-shop)
+
+### 2. Playwright E2E Testing
+
+Use Playwright to automate browser interactions with the [Spring Boot backend](https://github.com/Thanh-Binhhh/Spring-Commerce).
+
+Implemented tasks:
+
+- Open the Products page
+- Verify that products are rendered on the UI
+- Validate product name and price
+
+[Detailed information](#-playwright-e2e-testing)
+
+### 3. Git & GitHub
+
+Manage the automation project using Git and GitHub.
+
+Planned tasks:
+
+- Create and manage Git branches
+- Commit automation test changes
+- Push source code to GitHub
+- Maintain a clean repository structure
+- Use `.gitignore` for generated files
+
+### 4. GitHub Actions CI/CD
+
+Integrate Playwright tests with GitHub Actions.
+
+Planned tasks:
+
+- Create GitHub Actions workflow
+- Automatically install dependencies
+- Install Playwright browsers
+- Run automated tests on every push
+- Upload Playwright test reports as artifacts
+
+### 5. Playwright HTML Report
+
+Generate and review Playwright HTML test reports.
+
+Implemented / planned tasks:
+
+- Generate HTML reports after test execution
+- Review passed and failed test cases
+- View execution duration
+- Debug failed tests using report information
 
 ---
 
@@ -81,3 +127,16 @@ playwright-tests/
 │   ├── package.json
 │   └── playwright.config.ts
 ```
+
+---
+
+## E2E
+
+```
+npx playwright install chromium
+npx playwright test tests/e2e/plants.spec.js --headed
+
+```
+
+npx playwright test --project=e2e --reporter=html
+npx playwright show-report
