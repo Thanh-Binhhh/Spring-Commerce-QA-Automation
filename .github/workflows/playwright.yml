@@ -1,0 +1,130 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Get Playwright automation code
+      - name: Checkout Playwright tests
+        uses: actions/checkout@v4
+
+      # 2. Install Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # 3. Install Playwright dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      # 4. Get backend code from main branch
+      - name: Checkout backend
+        uses: actions/checkout@v4
+        with:
+          repository: Thanh-Binhhh/Spring-Commerce
+          ref: main
+          path: backend
+
+      # 5. Get frontend code from frontend branch
+      - name: Checkout frontend
+        uses: actions/checkout@v4
+        with:
+          repository: Thanh-Binhhh/Spring-Commerce
+          ref: frontend
+          path: frontend
+
+      # 6. Setup Java
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      # 7. Start MySQL
+      - name: Start MySQL
+        working-directory: backend
+        run: docker compose up -d
+
+      - name: Wait for MySQL
+        working-directory: backend
+        run: |
+          for i in {1..30}; do
+            if docker compose exec -T mysql mysqladmin ping -h localhost -uroot --silent; then
+              echo "MySQL is ready"
+              exit 0
+            fi
+
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
+
+          exit 1
+
+      # 8. Start Spring Boot backend
+      - name: Start backend
+        working-directory: backend
+        run: |
+          chmod +x mvnw
+          nohup ./mvnw spring-boot:run > ../backend.log 2>&1 &
+
+      - name: Wait for backend
+        run: |
+          for i in {1..60}; do
+            if curl -f "http://localhost:8080/plants?currentPage=0"; then
+              echo "Backend is ready"
+              exit 0
+            fi
+
+            echo "Waiting for backend..."
+            sleep 2
+          done
+
+          cat backend.log
+          exit 1
+
+      # 9. Start frontend on port 5500
+      - name: Start frontend
+        run: |
+          nohup python3 -m http.server 5500 --directory frontend > frontend.log 2>&1 &
+
+      - name: Wait for frontend
+        run: |
+          for i in {1..30}; do
+            if curl -f "http://localhost:5500/pages/products.html"; then
+              echo "Frontend is ready"
+              exit 0
+            fi
+
+            sleep 1
+          done
+
+          exit 1
+
+      # 10. Run API + E2E tests
+      - name: Run Playwright tests
+        run: npx playwright test
+
+      # 11. Save HTML report
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

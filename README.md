@@ -36,8 +36,7 @@ Manage the automation project using Git and GitHub.
 
 Planned tasks:
 
-- Create and manage Git branches
-- Commit automation test changes
+- Commit test changes
 - Push source code to GitHub
 - Maintain a clean repository structure
 - Use `.gitignore` for generated files
