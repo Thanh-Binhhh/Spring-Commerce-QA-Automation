@@ -6,20 +6,16 @@ The project includes five main stages:
 
 ### 1. Playwright API Testing
 
-Use Playwright with TypeScript to perform automated API testing for a [Spring Boot backend](https://github.com/Thanh-Binhhh/Spring-Commerce) backend.
+Use Playwright with TypeScript to perform automated API testing for a [Spring Boot backend](https://github.com/Thanh-Binhhh/Spring-Commerce).
 
 Implemented tasks:
 
-- Set up Playwright with TypeScript
-- Configure the backend `baseURL`
-- Send HTTP requests to the Spring Boot backend
+- Set up Playwright and configure the backend `baseURL`
 - Create positive API test cases
 - Create negative API test cases
 - Validate HTTP status codes
-- Validate response data
 - Validate response structure and data types
 - Test query parameters
-- Identify unexpected backend behavior
 
 [Detailed information](#playwright-api-testing-for-bonsai-shop)
 
@@ -32,12 +28,7 @@ Backend repository: [Spring-Commerce](https://github.com/Thanh-Binhhh/Spring-Com
 ### Project structure
 
 ```
-Spring-Commerce/
-│
-├── .mvn/wrapper/
-├── src/
-|
-├── 📁 playwright-tests/
+playwright-tests/
 │   ├── tests/api/                  // folder contains all automated API test files
 │   │   ├── categories.spec.ts
 │   │   └── plants.spec.ts
@@ -45,15 +36,6 @@ Spring-Commerce/
 │   ├── package-lock.json
 │   ├── playwright.config.ts
 │   └── README.md
-|
-├── .gitattributes
-├── .gitignore
-├── README.md
-├── docker-compose.yml
-├── init.sql
-├── mvnw
-├── mvnw.cmd
-└── pom.xml
 
 ```
 
@@ -80,7 +62,7 @@ Run a specific test file:
 npx playwright test tests/api/categories.spec.ts
 ```
 
-## Creating the Playwright Test Project from scratch
+### Creating the Playwright Test Project from scratch
 
 Start from the root directory of the Spring Boot project.
 
@@ -94,9 +76,8 @@ npm install -D @playwright/test
 Then create the following structure
 
 ```
-├── 📁 playwright-tests/
+playwright-tests/
 │   ├── tests/api/
 │   ├── package.json
-│   ├── package-lock.json
 │   └── playwright.config.ts
 ```
