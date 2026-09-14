@@ -40,12 +40,12 @@ jobs:
           ref: main
           path: backend
 
-      # 5. Get frontend code from frontend branch
+      # 5. Get frontend code from front-end branch
       - name: Checkout frontend
         uses: actions/checkout@v4
         with:
           repository: Thanh-Binhhh/Spring-Commerce
-          ref: frontend
+          ref: front-end
           path: frontend
 
       # 6. Setup Java
